@@ -2,25 +2,26 @@ package com.example.supplyservice.controller;
 
 import com.example.supplyservice.model.ActualTradingDay;
 import com.google.gson.Gson;
-import org.apache.catalina.Pipeline;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/supply/")
 public class SupplyController {
     @GetMapping("/currencyRatesCertainDate/{certainDate}")
-    public CurrencyDay getCurrencyRatesForCertainDate(@PathVariable String certainDate) {
-
+    public HashMap<String, BigDecimal> getCurrencyRatesForCertainDate(@PathVariable String certainDate) {
+        HashMap<String, BigDecimal> resultCurrenciesPricesPairsSet = new HashMap<>();
         try {
 
             HttpRequest getRequest = HttpRequest.newBuilder()
@@ -37,9 +38,14 @@ public class SupplyController {
             ActualTradingDay[] actualTradingDays = getResponse.statusCode() != 200 ? null
                     : gson.fromJson(getResponse.body(), ActualTradingDay[].class);
 
+            if (actualTradingDays != null) {
+                actualTradingDays[0].getRates().forEach(pair -> resultCurrenciesPricesPairsSet.put(pair.getCode(), pair.getAsk()));
+            }
+            return resultCurrenciesPricesPairsSet;
+
         } catch (URISyntaxException | IOException |InterruptedException exception) {
             System.err.println("Something went wrong in getCurrencyRatesForCertainDate method");
-            return null;
+            return resultCurrenciesPricesPairsSet;
         }
     }
 }

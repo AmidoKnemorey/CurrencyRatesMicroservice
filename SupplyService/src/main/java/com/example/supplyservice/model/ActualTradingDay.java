@@ -32,9 +32,9 @@ public class ActualTradingDay {
     @SerializedName("effectiveDate")
     private String effectiveDate;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, mappedBy = "currencyDay")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, mappedBy = "actualTradingDay")
     @SerializedName("rates")
-    private List<BankCurrencyUnit> allCurrencyUnits = new ArrayList<>();
+    private List<BankCurrencyUnit> rates = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -44,7 +44,7 @@ public class ActualTradingDay {
                 ", no='" + no + '\'' +
                 ", tradingDate='" + tradingDate + '\'' +
                 ", effectiveDate='" + effectiveDate + '\'' +
-                ", allCurrencyUnits=" + allCurrencyUnits +
+                ", rates=" + rates +
                 '}';
     }
 }

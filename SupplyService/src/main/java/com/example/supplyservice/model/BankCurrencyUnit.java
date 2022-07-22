@@ -20,7 +20,7 @@ public class BankCurrencyUnit {
     @SerializedName("currency")
     private String currency;
     @SerializedName("code")
-    private String code;
+    private String code ;
     @SerializedName("bid")
     private BigDecimal bid;
     @SerializedName("ask")
@@ -28,7 +28,7 @@ public class BankCurrencyUnit {
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "currencyDay_id")
+    @JoinColumn(name = "currency_day_id")
     private ActualTradingDay actualTradingDay;
 
     @Override
