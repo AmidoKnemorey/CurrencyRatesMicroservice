@@ -1,6 +1,7 @@
 package com.example.supplyservice.model;
 
 
+import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,7 +34,7 @@ public class ActualTradingDay {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, mappedBy = "currencyDay")
     @SerializedName("rates")
-    private List<CurrencyUnit> allCurrencyUnits = new ArrayList<>();
+    private List<BankCurrencyUnit> allCurrencyUnits = new ArrayList<>();
 
     @Override
     public String toString() {

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ResponseHandler {
-    public static ResponseEntity<BigDecimal> generateResponse(String message, HttpStatus httpStatus, BigDecimal body) {
+    public static ResponseEntity<Object> generateResponse(String message, HttpStatus httpStatus, BigDecimal body) {
         Map<String, Object> source = new HashMap<>();
         source.put("message", message);
         source.put("status", httpStatus.value());

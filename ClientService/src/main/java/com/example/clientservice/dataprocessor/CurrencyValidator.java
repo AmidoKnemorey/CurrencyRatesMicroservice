@@ -4,18 +4,16 @@ import com.example.clientservice.model.ClientCurrencyUnit;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
 public class CurrencyValidator {
 
     private static final List<String> ALL_POSSIBLE_CURRENCIES =
             List.of("USD", "AUD", "CAD", "EUR", "HUF", "CHF", "GBP", "JPY", "CZK", "DKK", "NOK","SEK", "XDR");
 
-    public boolean validateRequest(List<ClientCurrencyUnit> clientForeignCurrencies) {
+    public static boolean validateRequest(List<ClientCurrencyUnit> clientForeignCurrencies) {
         return currenciesTypesValidator(clientForeignCurrencies) && currenciesValuesValidator(clientForeignCurrencies);
     }
 

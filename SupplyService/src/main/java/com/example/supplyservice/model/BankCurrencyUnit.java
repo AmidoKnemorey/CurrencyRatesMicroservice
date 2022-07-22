@@ -1,5 +1,6 @@
 package com.example.supplyservice.model;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,7 +29,7 @@ public class BankCurrencyUnit {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "currencyDay_id")
-    private CurrencyDay currencyDay;
+    private ActualTradingDay actualTradingDay;
 
     @Override
     public String toString() {
@@ -38,7 +39,7 @@ public class BankCurrencyUnit {
                 ", code='" + code + '\'' +
                 ", bid=" + bid +
                 ", ask=" + ask +
-                ", currencyDay=" + currencyDay +
+                ", actualTradingDay=" + actualTradingDay +
                 '}';
     }
 }

@@ -1,5 +1,8 @@
 package com.example.supplyservice.controller;
 
+import com.example.supplyservice.model.ActualTradingDay;
+import com.google.gson.Gson;
+import org.apache.catalina.Pipeline;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,15 +34,8 @@ public class SupplyController {
 
             Gson gson = new Gson();
 
-            CurrencyDay[] currencyDayByBankAPI = getResponse.statusCode() != 200 ? null
-                    : gson.fromJson(getResponse.body(), CurrencyDay[].class);
-
-            if (currencyDayByBankAPI != null) {
-
-                return currencyDayByBankAPI[0];
-            } else {
-                return null;
-            }
+            ActualTradingDay[] actualTradingDays = getResponse.statusCode() != 200 ? null
+                    : gson.fromJson(getResponse.body(), ActualTradingDay[].class);
 
         } catch (URISyntaxException | IOException |InterruptedException exception) {
             System.err.println("Something went wrong in getCurrencyRatesForCertainDate method");
