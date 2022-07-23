@@ -35,6 +35,6 @@ public class CurrencyValidator {
     private static boolean currenciesValuesValidator(List<ClientCurrencyUnit> clientForeignCurrencies) {
         return clientForeignCurrencies.stream().
                 map(ClientCurrencyUnit::getCurrencyAmount)
-                .anyMatch(each -> each.compareTo(BigDecimal.ZERO) <= 0);
+                .noneMatch(each -> each.compareTo(BigDecimal.ZERO) <= 0);
     }
 }

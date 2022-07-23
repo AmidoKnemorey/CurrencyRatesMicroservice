@@ -20,10 +20,9 @@ public class ClientCurrencyUnit {
 
     @Override
     public String toString() {
-        return "ForeignCurrency{" +
+        return "ClientCurrencyUnit{" +
                 "currencyCode='" + currencyCode + '\'' +
                 ", currencyAmount=" + currencyAmount +
                 '}';
     }
-
 }

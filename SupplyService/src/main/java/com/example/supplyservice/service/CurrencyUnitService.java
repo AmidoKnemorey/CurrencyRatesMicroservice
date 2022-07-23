@@ -1,8 +1,8 @@
 package com.example.supplyservice.service;
 
-import com.example.currencyrates.bankservice.model.CurrencyDay;
-import com.example.currencyrates.bankservice.model.CurrencyUnit;
-import com.example.currencyrates.clientservice.repository.CurrencyUnitRepository;
+import com.example.supplyservice.model.BankCurrencyUnit;
+import com.example.supplyservice.model.TradingDay;
+import com.example.supplyservice.repository.CurrencyUnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,6 @@ import java.util.Set;
 
 @Service
 public class CurrencyUnitService {
-    //TODO RESTORE THIS CLASS
 
     private final CurrencyUnitRepository currencyUnitRepository;
 
@@ -20,25 +19,23 @@ public class CurrencyUnitService {
         this.currencyUnitRepository = currencyUnitRepository;
     }
 
-    public List<CurrencyUnit> getCurrencyUnitsByCertainDayId(Long id) {
-        return this.currencyUnitRepository.findCurrencyUnitsByCertainDayId(id);
+    public List<BankCurrencyUnit> getCurrencyUnitsByCertainDayId(Long dayId) {
+        return this.currencyUnitRepository.findCurrencyUnitsByCertainDayId(dayId);
     }
 
-    public void saveCurrencyUnits(Set<CurrencyUnit> currencyUnitsSet, CurrencyDay currencyDay) {
-        for (CurrencyUnit currencyUnit : currencyUnitsSet) {
-            saveOneUnit(CurrencyUnit.builder()
+    public void saveCurrencyUnits(List<BankCurrencyUnit> currencyUnitsSet, TradingDay tradingDay) {
+        for (BankCurrencyUnit currencyUnit : currencyUnitsSet) {
+            saveOneUnit(BankCurrencyUnit.builder()
                     .currency(currencyUnit.getCurrency())
                     .code(currencyUnit.getCode())
                     .bid(currencyUnit.getBid())
                     .ask(currencyUnit.getAsk())
-                    .currencyDay(currencyDay)
+                    .actualTradingDay(tradingDay)
                     .build());
         }
     }
 
-    private void saveOneUnit(CurrencyUnit currencyUnit) {
-        this.currencyUnitRepository.save(currencyUnit);
+    private void saveOneUnit(BankCurrencyUnit bankCurrencyUnit) {
+        this.currencyUnitRepository.save(bankCurrencyUnit);
     }
-
-
 }

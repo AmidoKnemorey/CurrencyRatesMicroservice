@@ -29,7 +29,7 @@ public class BankCurrencyUnit {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "currency_day_id")
-    private ActualTradingDay actualTradingDay;
+    private TradingDay actualTradingDay;
 
     @Override
     public String toString() {

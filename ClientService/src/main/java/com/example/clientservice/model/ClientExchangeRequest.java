@@ -19,6 +19,6 @@ public class ClientExchangeRequest {
 
     @Embedded
     @SerializedName("foreignCurrencies")
-    private ClientCurrencyUnit[] clientForeignCurrencies;
+    private ClientCurrencyUnit[] foreignCurrencies;
 
 }
