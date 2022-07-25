@@ -2,25 +2,24 @@ package com.example.supplyservice.service;
 
 import com.example.supplyservice.model.BankCurrencyUnit;
 import com.example.supplyservice.model.TradingDay;
-import com.example.supplyservice.repository.CurrencyUnitRepository;
+import com.example.supplyservice.repository.CurrencyPricesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
-public class CurrencyUnitService {
+public class CurrencyPricesService {
 
-    private final CurrencyUnitRepository currencyUnitRepository;
+    private final CurrencyPricesRepository currencyPricesRepository;
 
     @Autowired
-    public CurrencyUnitService(CurrencyUnitRepository currencyUnitRepository) {
-        this.currencyUnitRepository = currencyUnitRepository;
+    public CurrencyPricesService(CurrencyPricesRepository currencyPricesRepository) {
+        this.currencyPricesRepository = currencyPricesRepository;
     }
 
     public List<BankCurrencyUnit> getCurrencyUnitsByCertainDayId(Long dayId) {
-        return this.currencyUnitRepository.findCurrencyUnitsByCertainDayId(dayId);
+        return this.currencyPricesRepository.findCurrencyUnitsByCertainDayId(dayId);
     }
 
     public void saveCurrencyUnits(List<BankCurrencyUnit> currencyUnitsSet, TradingDay tradingDay) {
@@ -36,6 +35,6 @@ public class CurrencyUnitService {
     }
 
     private void saveOneUnit(BankCurrencyUnit bankCurrencyUnit) {
-        this.currencyUnitRepository.save(bankCurrencyUnit);
+        this.currencyPricesRepository.save(bankCurrencyUnit);
     }
 }

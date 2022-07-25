@@ -2,8 +2,8 @@ package com.example.clientservice.dataprocessor;
 
 import com.example.clientservice.model.ClientCurrencyUnit;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.http.ResponseEntity;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,30 +11,36 @@ import java.util.stream.Collectors;
 public class CurrencyValidator {
 
     private static final List<String> ALL_POSSIBLE_CURRENCIES =
-            List.of("USD", "AUD", "CAD", "EUR", "HUF", "CHF", "GBP", "JPY", "CZK", "DKK", "NOK","SEK", "XDR");
+            List.of("USD", "AUD", "CAD", "EUR", "HUF", "CHF", "GBP", "JPY", "CZK", "DKK", "NOK", "SEK", "XDR");
 
-    public static boolean validateRequest(List<ClientCurrencyUnit> clientForeignCurrencies) {
-        return currenciesTypesValidator(clientForeignCurrencies) && currenciesValuesValidator(clientForeignCurrencies);
-    }
+    public static ResponseEntity<String> validateRequest(List<ClientCurrencyUnit> clientForeignCurrencies) {
 
-    private static boolean currenciesTypesValidator(List<ClientCurrencyUnit> clientForeignCurrencies) {
-        if (ALL_POSSIBLE_CURRENCIES.containsAll(clientForeignCurrencies.stream()
-                .map(ClientCurrencyUnit::getCurrencyCode)
-                .collect(Collectors.toList()))) {
-            return true;
+        ResponseEntity<String> firstValidationResult = currenciesTypesValidator(clientForeignCurrencies);
+        ResponseEntity<String> secondValidationResult = currenciesValuesValidator(clientForeignCurrencies);
+
+        if (firstValidationResult.getStatusCode().value() != 200) {
+            return firstValidationResult;
+        } else if (secondValidationResult.getStatusCode().value() != 200) {
+            return secondValidationResult;
         } else {
-            throw new HttpStatusCodeException(HttpStatus.BAD_REQUEST, "One currency from your request isn't supported") {
-                @Override
-                public HttpStatus getStatusCode() {
-                    return super.getStatusCode();
-                }
-            };
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
-    private static boolean currenciesValuesValidator(List<ClientCurrencyUnit> clientForeignCurrencies) {
+    private static ResponseEntity<String> currenciesTypesValidator(List<ClientCurrencyUnit> clientForeignCurrencies) {
+        if (ALL_POSSIBLE_CURRENCIES.containsAll(clientForeignCurrencies.stream()
+                .map(ClientCurrencyUnit::getCurrencyCode)
+                .collect(Collectors.toList()))) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("One currency from your request isn't supported", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    private static ResponseEntity<String> currenciesValuesValidator(List<ClientCurrencyUnit> clientForeignCurrencies) {
         return clientForeignCurrencies.stream().
                 map(ClientCurrencyUnit::getCurrencyAmount)
-                .noneMatch(each -> each.compareTo(BigDecimal.ZERO) <= 0);
+                .noneMatch(each -> each.compareTo(BigDecimal.ZERO) <= 0) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>("One value is equal or less then zero", HttpStatus.BAD_REQUEST);
     }
 }

@@ -22,30 +22,22 @@ public class TradingDay {
     private Long id;
 
     @SerializedName("table")
+    @Column(length = 5)
     private String table;
 
     @SerializedName("no")
+    @Column(length = 30)
     private String no;
 
     @SerializedName("tradingDate")
+    @Column(length = 10)
     private String tradingDate;
 
     @SerializedName("effectiveDate")
+    @Column(length = 10)
     private String effectiveDate;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, mappedBy = "actualTradingDay")
     @SerializedName("rates")
     private List<BankCurrencyUnit> rates = new ArrayList<>();
-
-    @Override
-    public String toString() {
-        return "CurrencyDay{" +
-                "id=" + id +
-                ", table='" + table + '\'' +
-                ", no='" + no + '\'' +
-                ", tradingDate='" + tradingDate + '\'' +
-                ", effectiveDate='" + effectiveDate + '\'' +
-                ", rates=" + rates +
-                '}';
-    }
 }
